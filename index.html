@@ -68,9 +68,12 @@
         document.addEventListener('DOMContentLoaded', function () {
             const versiculos = document.querySelectorAll('.versiculo');
             const popup = document.getElementById('popup');
+            let hideTimeout; // Variável para controlar o temporizador
 
             versiculos.forEach(function(versiculo) {
                 versiculo.addEventListener('mouseover', async function(e) {
+                    clearTimeout(hideTimeout); // Cancela o temporizador ao passar o mouse
+
                     const file = versiculo.getAttribute('data-ref');
                     const chapter = versiculo.getAttribute('data-chapter');
                     const verse = versiculo.getAttribute('data-verse');
@@ -109,7 +112,22 @@
                 });
 
                 versiculo.addEventListener('mouseout', function() {
-                    popup.style.display = 'none';
+                    // Define um tempo para esconder o pop-up
+                    hideTimeout = setTimeout(() => {
+                        popup.style.display = 'none';
+                    }, 2000); // 2 segundos de atraso
+                });
+
+                // Cancela o temporizador se o mouse estiver sobre o pop-up
+                popup.addEventListener('mouseover', function() {
+                    clearTimeout(hideTimeout);
+                });
+
+                // Oculta o pop-up quando o mouse sai dele
+                popup.addEventListener('mouseout', function() {
+                    hideTimeout = setTimeout(() => {
+                        popup.style.display = 'none';
+                    }, 2000); // 2 segundos de atraso
                 });
             });
         });
