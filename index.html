@@ -68,12 +68,9 @@
         document.addEventListener('DOMContentLoaded', function () {
             const versiculos = document.querySelectorAll('.versiculo');
             const popup = document.getElementById('popup');
-            let hideTimeout; // Variável para controlar o temporizador
 
             versiculos.forEach(function(versiculo) {
                 versiculo.addEventListener('mouseover', async function(e) {
-                    clearTimeout(hideTimeout); // Cancela o temporizador ao passar o mouse
-
                     const file = versiculo.getAttribute('data-ref');
                     const chapter = versiculo.getAttribute('data-chapter');
                     const verse = versiculo.getAttribute('data-verse');
@@ -94,7 +91,7 @@
                             const verseElement = chapterElement?.querySelector(`verse[number="${verse}"]`);
                             const verseText = verseElement?.textContent || 'Versículo não encontrado.';
 
-                            // Exibe o texto do versículo com link direcionado ao capítulo
+                            // Exibe o texto do versículo com a referência da versão
                             const chapterUrl = `https://inovacaomab.github.io/bibliaACFestudo/acf/${file}#capitulo-${chapter}`;
                             popup.innerHTML = `${verseText} <a href="${chapterUrl}" target="_blank">ACF - Português</a>`;
                         } else {
@@ -124,25 +121,14 @@
                     popup.style.left = `${left}px`;
                     popup.style.top = `${top}px`;
                 });
+            });
 
-                versiculo.addEventListener('mouseout', function() {
-                    // Define um tempo para esconder o pop-up
-                    hideTimeout = setTimeout(() => {
-                        popup.style.display = 'none';
-                    }, 2000); // 2 segundos de atraso
-                });
-
-                // Cancela o temporizador se o mouse estiver sobre o pop-up
-                popup.addEventListener('mouseover', function() {
-                    clearTimeout(hideTimeout);
-                });
-
-                // Oculta o pop-up quando o mouse sai dele
-                popup.addEventListener('mouseout', function() {
-                    hideTimeout = setTimeout(() => {
-                        popup.style.display = 'none';
-                    }, 2000); // 2 segundos de atraso
-                });
+            // Fecha o pop-up ao clicar fora dele
+            document.addEventListener('click', function(e) {
+                // Verifica se o clique não foi dentro do pop-up
+                if (!popup.contains(e.target) && !e.target.classList.contains('versiculo')) {
+                    popup.style.display = 'none';
+                }
             });
         });
     </script>
