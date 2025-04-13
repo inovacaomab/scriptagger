@@ -63,25 +63,29 @@
                 versiculo.addEventListener('mouseover', async function(e) {
                     const referencia = versiculo.getAttribute('data-ref');
                     
-                    // Ajuste a URL para usar a estrutura do seu site
+                    // URL ajustada para usar a estrutura do seu site base
                     const url = `https://www.scriptura.com.br/${referencia}`;
+                    console.log(`Fetching URL: ${url}`); // Log para depuração
 
                     // Busca o conteúdo da referência no site base
                     try {
                         const response = await fetch(url);
                         if (response.ok) {
                             const text = await response.text(); // Obtém o HTML da página como texto
+                            console.log(`Response received from ${url}:`, text); // Log do HTML retornado
                             
-                            // Extrai o conteúdo relevante (ajustar conforme necessário)
+                            // Tenta localizar o texto do versículo no HTML
                             const parser = new DOMParser();
                             const doc = parser.parseFromString(text, 'text/html');
-                            const versiculoTexto = doc.querySelector('p').textContent; // Ajustar se necessário
+                            const versiculoTexto = doc.querySelector('p')?.textContent || 'Texto não localizado.';
                             popup.textContent = versiculoTexto;
                         } else {
-                            popup.textContent = 'Texto não encontrado.';
+                            popup.textContent = `Erro ao acessar ${url}. Status: ${response.status}`;
+                            console.error(`Failed to fetch: ${url}. Status: ${response.status}`);
                         }
                     } catch (error) {
                         popup.textContent = 'Erro ao carregar o versículo.';
+                        console.error(`Error fetching ${url}:`, error);
                     }
 
                     // Exibe o pop-up
