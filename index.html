@@ -27,19 +27,54 @@
             position: absolute;
             background-color: white;
             border: 1px solid #ccc;
-            padding: 10px;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
             z-index: 1000;
-            width: 300px;
+            width: 350px;
+            border-radius: 5px;
         }
-        .popup a {
-            display: block;
-            margin-top: 10px;
+        .popup-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ccc;
+            padding: 5px 10px;
+            font-weight: bold;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        .popup-header button {
+            background-color: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .popup-header button:hover {
+            color: red;
+        }
+        .popup-content {
+            padding: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .popup-content .verse-number {
+            color: blue;
+            font-weight: bold;
+        }
+        .popup-footer {
+            background-color: #f0f0f0;
+            border-top: 1px solid #ccc;
+            text-align: center;
+            padding: 5px;
             font-size: 12px;
-            text-decoration: none;
-            color: #007bff;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
         }
-        .popup a:hover {
+        .popup-footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .popup-footer a:hover {
             text-decoration: underline;
         }
     </style>
@@ -62,12 +97,23 @@
         </p>
     </div>
 
-    <div id="popup" class="popup"></div>
+    <div id="popup" class="popup">
+        <div class="popup-header">
+            <span>Texto citado</span>
+            <button id="closePopup">X</button>
+        </div>
+        <div class="popup-content" id="popupContent"></div>
+        <div class="popup-footer">
+            <a href="https://inovacaomab.github.io/bibliaACFestudo/" target="_blank">ACF - Português</a>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const versiculos = document.querySelectorAll('.versiculo');
             const popup = document.getElementById('popup');
+            const popupContent = document.getElementById('popupContent');
+            const closePopup = document.getElementById('closePopup');
 
             versiculos.forEach(function(versiculo) {
                 versiculo.addEventListener('mouseover', async function(e) {
@@ -75,42 +121,31 @@
                     const chapter = versiculo.getAttribute('data-chapter');
                     const verse = versiculo.getAttribute('data-verse');
                     
-                    // URL para carregar o arquivo XML do site base
                     const url = `https://inovacaomab.github.io/bibliaACFestudo/acf/${file}`;
-                    console.log(`Fetching URL: ${url}`); // Log para depuração
-
+                    
                     try {
                         const response = await fetch(url);
                         if (response.ok) {
-                            const xmlText = await response.text(); // Carrega o conteúdo do XML
+                            const xmlText = await response.text();
                             const parser = new DOMParser();
                             const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-
-                            // Localiza o capítulo e o versículo no XML
                             const chapterElement = xmlDoc.querySelector(`chapter[number="${chapter}"]`);
                             const verseElement = chapterElement?.querySelector(`verse[number="${verse}"]`);
                             const verseText = verseElement?.textContent || 'Versículo não encontrado.';
-
-                            // Exibe o texto do versículo com a referência da versão
-                            const chapterUrl = `https://inovacaomab.github.io/bibliaACFestudo/acf/${file}#capitulo-${chapter}`;
-                            popup.innerHTML = `${verseText} <a href="${chapterUrl}" target="_blank">ACF - Português</a>`;
+                            popupContent.innerHTML = `<span class="verse-number">${verse}</span> ${verseText}`;
                         } else {
-                            popup.innerHTML = `Erro ao acessar ${url}. Status: ${response.status}`;
-                            console.error(`Failed to fetch: ${url}. Status: ${response.status}`);
+                            popupContent.textContent = `Erro ao acessar ${url}. Status: ${response.status}`;
                         }
                     } catch (error) {
-                        popup.innerHTML = 'Erro ao carregar o versículo.';
-                        console.error(`Error fetching ${url}:`, error);
+                        popupContent.textContent = 'Erro ao carregar o versículo.';
                     }
 
-                    // Exibe o pop-up e ajusta a posição
                     popup.style.display = 'block';
                     const popupWidth = popup.offsetWidth;
                     const popupHeight = popup.offsetHeight;
                     let left = e.pageX + 10;
                     let top = e.pageY + 10;
 
-                    // Verifica se o pop-up ultrapassa os limites da tela
                     if (left + popupWidth > window.innerWidth) {
                         left = window.innerWidth - popupWidth - 10;
                     }
@@ -123,9 +158,11 @@
                 });
             });
 
-            // Fecha o pop-up ao clicar fora dele
+            closePopup.addEventListener('click', function() {
+                popup.style.display = 'none';
+            });
+
             document.addEventListener('click', function(e) {
-                // Verifica se o clique não foi dentro do pop-up
                 if (!popup.contains(e.target) && !e.target.classList.contains('versiculo')) {
                     popup.style.display = 'none';
                 }
