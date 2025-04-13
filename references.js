@@ -62,20 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
     popupFooter.style.fontSize = '12px';
     popupFooter.style.borderBottomLeftRadius = '5px';
     popupFooter.style.borderBottomRightRadius = '5px';
-
-    const footerLink = document.createElement('a');
-    footerLink.href = 'https://inovacaomab.github.io/bibliaACFestudo/';
-    footerLink.target = '_blank';
-    footerLink.style.color = '#007bff';
-    footerLink.style.textDecoration = 'none';
-    footerLink.textContent = 'ACF - Português';
-    footerLink.addEventListener('mouseover', function () {
-        footerLink.style.textDecoration = 'underline';
-    });
-    footerLink.addEventListener('mouseout', function () {
-        footerLink.style.textDecoration = 'none';
-    });
-    popupFooter.appendChild(footerLink);
+    popupFooter.textContent = 'Versão ACF';
     popup.appendChild(popupFooter);
 
     document.body.appendChild(popup);
@@ -86,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const file = versiculo.getAttribute('data-ref');
             const chapter = versiculo.getAttribute('data-chapter');
             const verse = versiculo.getAttribute('data-verse');
+            const reference = versiculo.textContent; // Captura a referência completa
             const url = `https://inovacaomab.github.io/bibliaACFestudo/acf/${file}`;
 
             try {
@@ -97,7 +85,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     const chapterElement = xmlDoc.querySelector(`chapter[number="${chapter}"]`);
                     const verseElement = chapterElement?.querySelector(`verse[number="${verse}"]`);
                     const verseText = verseElement?.textContent || 'Versículo não encontrado.';
-                    popupContent.innerHTML = `<span style="color: blue; font-weight: bold;">${verse}</span> ${verseText}`;
+                    popupContent.innerHTML = `
+                        <span style="font-weight: bold; display: block; margin-bottom: 10px;">${reference}</span>
+                        <span>${verseText}</span>
+                    `;
                 } else {
                     popupContent.textContent = `Erro ao acessar ${url}. Status: ${response.status}`;
                 }
