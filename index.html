@@ -94,8 +94,9 @@
                             const verseElement = chapterElement?.querySelector(`verse[number="${verse}"]`);
                             const verseText = verseElement?.textContent || 'Versículo não encontrado.';
 
-                            // Exibe o texto do versículo com a referência da versão
-                            popup.innerHTML = `${verseText} <a href="https://inovacaomab.github.io/bibliaACFestudo/" target="_blank">ACF - Português</a>`;
+                            // Exibe o texto do versículo com link direcionado ao capítulo
+                            const chapterUrl = `https://inovacaomab.github.io/bibliaACFestudo/acf/${file}#capitulo-${chapter}`;
+                            popup.innerHTML = `${verseText} <a href="${chapterUrl}" target="_blank">ACF - Português</a>`;
                         } else {
                             popup.innerHTML = `Erro ao acessar ${url}. Status: ${response.status}`;
                             console.error(`Failed to fetch: ${url}. Status: ${response.status}`);
