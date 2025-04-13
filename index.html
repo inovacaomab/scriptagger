@@ -3,19 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo de Site - Reflexão Bíblica</title>
-    <!-- Importação do ScriptTagger conforme especificações -->
-    <script src="https://www.blueletterbible.org/assets-v3/scripts/blbToolTip/BLB_ScriptTagger-min.js" type="text/javascript"></script>
-    <script type="text/javascript">
-        // Configuração do ScriptTagger
-        BLB.Tagger.Translation = 'NKJV'; // Escolha a tradução da Bíblia
-        BLB.Tagger.HyperLinks = 'all'; // Ativar hiperlinks para todas as referências
-        BLB.Tagger.HideTanslationAbbrev = false; // Mostrar abreviações da tradução
-        BLB.Tagger.TargetNewWindow = true; // Abrir links em uma nova janela
-        BLB.Tagger.Style = 'par'; // Estilo de exibição: 'par' para parágrafos ou 'line' para linha a linha
-        BLB.Tagger.NoSearchTagNames = ''; // Elementos HTML que não serão pesquisados
-        BLB.Tagger.NoSearchClassNames = 'noTag doNotTag'; // Classes CSS que não serão pesquisadas
-    </script>
+    <title>Referências Bíblicas Personalizadas</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -28,6 +16,21 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .versiculo {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .popup {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            z-index: 1000;
+            width: 300px;
         }
     </style>
 </head>
@@ -43,10 +46,55 @@
         <p>
             Vamos explorar sua trajetória, sua fidelidade inicial, sua deserção e o que isso nos ensina sobre a importância
             de permanecer firmes na fé 
-            (<span class="scriptureRef">Mateus 10:22</span>;
-            <span class="scriptureRef">Mateus 24:13</span>;
-            <span class="scriptureRef">João 8:31</span>).
+            (<span class="versiculo" data-ref="mateus/mateus10">Mateus 10:22</span>;
+            <span class="versiculo" data-ref="mateus/mateus24">Mateus 24:13</span>;
+            <span class="versiculo" data-ref="joao/joao8">João 8:31</span>).
         </p>
     </div>
+
+    <div id="popup" class="popup"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const versiculos = document.querySelectorAll('.versiculo');
+            const popup = document.getElementById('popup');
+
+            versiculos.forEach(function(versiculo) {
+                versiculo.addEventListener('mouseover', async function(e) {
+                    const referencia = versiculo.getAttribute('data-ref');
+                    
+                    // Ajuste a URL para usar a estrutura do seu site
+                    const url = `https://www.scriptura.com.br/${referencia}`;
+
+                    // Busca o conteúdo da referência no site base
+                    try {
+                        const response = await fetch(url);
+                        if (response.ok) {
+                            const text = await response.text(); // Obtém o HTML da página como texto
+                            
+                            // Extrai o conteúdo relevante (ajustar conforme necessário)
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(text, 'text/html');
+                            const versiculoTexto = doc.querySelector('p').textContent; // Ajustar se necessário
+                            popup.textContent = versiculoTexto;
+                        } else {
+                            popup.textContent = 'Texto não encontrado.';
+                        }
+                    } catch (error) {
+                        popup.textContent = 'Erro ao carregar o versículo.';
+                    }
+
+                    // Exibe o pop-up
+                    popup.style.display = 'block';
+                    popup.style.left = `${e.pageX + 10}px`;
+                    popup.style.top = `${e.pageY + 10}px`;
+                });
+
+                versiculo.addEventListener('mouseout', function() {
+                    popup.style.display = 'none';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
