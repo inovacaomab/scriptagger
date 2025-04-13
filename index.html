@@ -57,9 +57,14 @@
             font-size: 14px;
             line-height: 1.6;
         }
-        .popup-content .verse-number {
-            color: blue;
+        .popup-content .reference {
             font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .popup-content .verse-text {
+            display: block;
+            margin-top: 5px;
         }
         .popup-footer {
             background-color: #f0f0f0;
@@ -69,13 +74,6 @@
             font-size: 12px;
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
-        }
-        .popup-footer a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .popup-footer a:hover {
-            text-decoration: underline;
         }
     </style>
 </head>
@@ -104,7 +102,7 @@
         </div>
         <div class="popup-content" id="popupContent"></div>
         <div class="popup-footer">
-            <a href="https://inovacaomab.github.io/bibliaACFestudo/" target="_blank">ACF - Português</a>
+            Versão ACF
         </div>
     </div>
 
@@ -115,12 +113,12 @@
             const popupContent = document.getElementById('popupContent');
             const closePopup = document.getElementById('closePopup');
 
-            versiculos.forEach(function(versiculo) {
-                versiculo.addEventListener('mouseover', async function(e) {
+            versiculos.forEach(function (versiculo) {
+                versiculo.addEventListener('mouseover', async function (e) {
                     const file = versiculo.getAttribute('data-ref');
                     const chapter = versiculo.getAttribute('data-chapter');
                     const verse = versiculo.getAttribute('data-verse');
-                    
+                    const reference = versiculo.textContent;
                     const url = `https://inovacaomab.github.io/bibliaACFestudo/acf/${file}`;
                     
                     try {
@@ -132,12 +130,15 @@
                             const chapterElement = xmlDoc.querySelector(`chapter[number="${chapter}"]`);
                             const verseElement = chapterElement?.querySelector(`verse[number="${verse}"]`);
                             const verseText = verseElement?.textContent || 'Versículo não encontrado.';
-                            popupContent.innerHTML = `<span class="verse-number">${verse}</span> ${verseText}`;
+                            popupContent.innerHTML = `
+                                <span class="reference">${reference}</span>
+                                <span class="verse-text">${verseText}</span>
+                            `;
                         } else {
-                            popupContent.textContent = `Erro ao acessar ${url}. Status: ${response.status}`;
+                            popupContent.innerHTML = `Erro ao acessar ${url}. Status: ${response.status}`;
                         }
                     } catch (error) {
-                        popupContent.textContent = 'Erro ao carregar o versículo.';
+                        popupContent.innerHTML = 'Erro ao carregar o versículo.';
                     }
 
                     popup.style.display = 'block';
@@ -158,11 +159,11 @@
                 });
             });
 
-            closePopup.addEventListener('click', function() {
+            closePopup.addEventListener('click', function () {
                 popup.style.display = 'none';
             });
 
-            document.addEventListener('click', function(e) {
+            document.addEventListener('click', function (e) {
                 if (!popup.contains(e.target) && !e.target.classList.contains('versiculo')) {
                     popup.style.display = 'none';
                 }
