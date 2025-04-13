@@ -32,6 +32,16 @@
             z-index: 1000;
             width: 300px;
         }
+        .popup a {
+            display: block;
+            margin-top: 10px;
+            font-size: 12px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .popup a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -81,13 +91,14 @@
                             const verseElement = chapterElement?.querySelector(`verse[number="${verse}"]`);
                             const verseText = verseElement?.textContent || 'Versículo não encontrado.';
 
-                            popup.textContent = verseText;
+                            // Exibe o texto do versículo com a referência da versão
+                            popup.innerHTML = `${verseText} <a href="https://inovacaomab.github.io/bibliaACFestudo/" target="_blank">ACF - Português</a>`;
                         } else {
-                            popup.textContent = `Erro ao acessar ${url}. Status: ${response.status}`;
+                            popup.innerHTML = `Erro ao acessar ${url}. Status: ${response.status}`;
                             console.error(`Failed to fetch: ${url}. Status: ${response.status}`);
                         }
                     } catch (error) {
-                        popup.textContent = 'Erro ao carregar o versículo.';
+                        popup.innerHTML = 'Erro ao carregar o versículo.';
                         console.error(`Error fetching ${url}:`, error);
                     }
 
