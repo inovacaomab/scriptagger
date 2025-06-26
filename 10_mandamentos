@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 Mandamentos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="content">
+        <h1>10 Mandamentos</h1>
+        Os Dez Mandamentos, encontrados em Êxodo e Deuteronômio, são um conjunto de leis e princípios éticos e religiosos centrais na fé judaico-cristã. Eles estabelecem deveres para com Deus e para com o próximo, delineando o comportamento esperado de um fiel.
+
+Os Dez Mandamentos:
+<span class="versiculo" data-ref="acf-ex.xml" data-chapter="20" data-verse="3">Êxodo 20:3</span>
+<span class="versiculo" data-ref="acf-ex.xml" data-chapter="20" data-verse="4">Êxodo 20:4</span>
+<span class="versiculo" data-ref="acf-ex.xml" data-chapter="20" data-verse="7">Êxodo 20:7</span>
+<span class="versiculo" data-ref="acf-ex.xml" data-chapter="20" data-verse="8">Êxodo 20:8</span>
+<span class="versiculo" data-ref="acf-ex.xml" data-chapter="20" data-verse="12">Êxodo 20:12</span> 
+<span class="versiculo" data-ref="acf-ex.xml" data-chapter="20" data-verse="13">Êxodo 20:13</span>
+<span class="versiculo" data-ref="acf-ex.xml" data-chapter="20" data-verse="14">Êxodo 20:14</span>
+<span class="versiculo" data-ref="acf-ex.xml" data-chapter="20" data-verse="15">Êxodo 20:15</span>
+<span class="versiculo" data-ref="acf-ex.xml" data-chapter="20" data-verse="16">Êxodo 20:16</span>
+<span class="versiculo" data-ref="acf-ex.xml" data-chapter="20" data-verse="17">Êxodo 20:17</span> 
+    </div>
+    <div id="popup" class="popup">
+        <div class="popup-header">
+            <span>Texto citado</span>
+            <button id="closePopup">X</button>
+        </div>
+        <div class="popup-content" id="popupContent"></div>
+        <div class="popup-footer">
+            Versão ACF - Uso Autorizado pela SBTB
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
