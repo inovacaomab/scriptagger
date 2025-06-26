@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referências Bíblicas Personalizadas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="content">
+        <h1>Demas: Uma Reflexão Sobre Apostasia</h1>
+        <p>
+            Demas é uma figura que, embora mencionada brevemente nas Escrituras, carrega uma lição profunda para todos nós.
+            Ele foi um colaborador do apóstolo Paulo, um homem que, por um tempo, se dedicou à causa do evangelho. No entanto,
+            sua história toma um rumo triste, mostrando como o amor pelo mundo pode levar à apostasia, um risco real para
+            qualquer cristão.
+        </p>
+        <p>
+            Vamos explorar sua trajetória, sua fidelidade inicial, sua deserção e o que isso nos ensina sobre a importância
+            de permanecer firmes na fé 
+            (<span class="versiculo" data-ref="acf-mt.xml" data-chapter="10" data-verse="22">Mateus 10:22</span>;
+            <span class="versiculo" data-ref="acf-mt.xml" data-chapter="24" data-verse="13">Mateus 24:13</span>;
+            <span class="versiculo" data-ref="acf-jo.xml" data-chapter="8" data-verse="31">João 8:31</span>).
+        </p>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-header">
+            <span>Texto citado</span>
+            <button id="closePopup">X</button>
+        </div>
+        <div class="popup-content" id="popupContent"></div>
+        <div class="popup-footer">
+            Versão ACF - Uso Autorizado pela SBTB
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
